@@ -1,0 +1,6 @@
+faicons
+shiny
+shinywidgets
+pandas
+numpy
+matplotlib
