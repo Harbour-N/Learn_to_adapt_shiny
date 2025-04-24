@@ -24,7 +24,7 @@ app_ui = ui.page_fluid(
                     ui.input_select(  
                                     "Freq_select",  
                                     "Select frequency of treatment decision",  
-                                    {14: "Biweekly", 7: "Weekly", 30: "Monthly (30 days)"},  
+                                    {30: "Monthly (30 days)", 14: "Biweekly", 7: "Weekly"},  
                                 ), 
                     ui.input_radio_buttons("Show", "Show sensitive and resistant populations", {0: "No", 1: "Yes"}),
         bg="#f8f8f8"), 
@@ -60,6 +60,7 @@ def server(input: Inputs, output: Outputs, session: Session):
 
     max_time = 1100
     t = np.arange(0, max_time, 1)
+    lw = 3
 
     @reactive.effect
     @reactive.event(input.start_stop)
@@ -139,18 +140,20 @@ def server(input: Inputs, output: Outputs, session: Session):
         ax.set_ylabel("Relative PSA level (tumor burden)")
         ax.set_ylim(0, 1.25)
         ax.set_xlim(0, max_time)
+        ax.set_yticks([0, 0.25, 0.5, 0.75, 1, 1.2])
+        ax.set_yticklabels(['0%','25%', '50%','75%','100%','120%'])
 
-        ax.hlines(1.2, 0, max_time, color = 'blue' ,linestyles='dashed', label='Tumor size limit')
+        ax.hlines(1.2, 0, max_time, color = 'blue' ,linestyles='dashed', label='Tumor size limit',linewidth = lw)
 
         current_params = list(params.get())
         show = int(input.Show())
 
         # Plot stored data as relative tumor size
         if sol_save.get() and time_save.get():
-            ax.plot(time_save.get(), sol_save.get() / np.sum(current_params[6:8]),markersize = 0.5, label="Total tumor size",color = 'black')
+            ax.plot(time_save.get(), sol_save.get() / np.sum(current_params[6:8]),markersize = 0.5, label="Total tumor size",color = 'black', linewidth = lw)
             if show == 1:
-                ax.plot(time_save.get(), s_save.get() / np.sum(current_params[6:8]),'--',markersize = 0.5, label="Sensitive tumor size",color = 'green')
-                ax.plot(time_save.get(), r_save.get() / np.sum(current_params[6:8]),'--',markersize = 0.5, label="Resistant tumor size",color = 'red')
+                ax.plot(time_save.get(), s_save.get() / np.sum(current_params[6:8]),'--',markersize = 0.5, label="Sensitive tumor size",color = 'green', linewidth = lw)
+                ax.plot(time_save.get(), r_save.get() / np.sum(current_params[6:8]),'--',markersize = 0.5, label="Resistant tumor size",color = 'red',linewidth = lw)
         
         return fig
     
