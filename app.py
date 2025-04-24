@@ -152,8 +152,8 @@ def server(input: Inputs, output: Outputs, session: Session):
         if sol_save.get() and time_save.get():
             ax.plot(time_save.get(), sol_save.get() / np.sum(current_params[6:8]),markersize = 0.5, label="Total tumor size",color = 'black', linewidth = lw)
             if show == 1:
-                ax.plot(time_save.get(), s_save.get() / np.sum(current_params[6:8]),'--',markersize = 0.5, label="Sensitive tumor size",color = 'green', linewidth = lw)
-                ax.plot(time_save.get(), r_save.get() / np.sum(current_params[6:8]),'--',markersize = 0.5, label="Resistant tumor size",color = 'red',linewidth = lw)
+                ax.plot(time_save.get(), s_save.get() / np.sum(current_params[6:8]),markersize = 0.5, label="Sensitive tumor size",color = 'green', linewidth = lw)
+                ax.plot(time_save.get(), r_save.get() / np.sum(current_params[6:8]),markersize = 0.5, label="Resistant tumor size",color = 'red',linewidth = lw)
         
         return fig
     
